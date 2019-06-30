@@ -20,7 +20,7 @@ s.author = { "Jaafar Barek" => "jaafar@ionoview.com" }
 s.homepage = "https://github.com/jaafarbarek1/CalendarComponent"
 
 # 6 - Replace this URL with your own Git URL from "Quick Setup"
-s.source = { :git => "https://github.com/jaafarbarek1/CalendarComponent.git", :commit => "ffdf1a2b8dc34c72fcd7eda048fc4452984118d8",
+s.source = { :git => "https://github.com/jaafarbarek1/CalendarComponent.git", :commit => "e692e1df02092372579c23801eeed49cfe777ff0",
 :tag => "#{s.version}" }
 
 # 7
