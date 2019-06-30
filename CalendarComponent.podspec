@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
 # 1
 s.platform = :ios
-s.ios.deployment_target = '12.0'
+s.ios.deployment_target = '11.0'
 s.name = "CalendarComponent"
 s.summary = "CalendarComponent is a lightweight calendar with 2 weeks view mode"
 s.requires_arc = true
@@ -30,7 +30,7 @@ s.framework = "UIKit"
 s.source_files = "CalendarComponent/**/*.{swift}"
 
 # 9
-s.resources = "CalendarComponent/**/*.{png,jpeg,jpg,storyboard,xib,xcassets}"
+# s.resources = "CalendarComponent/**/*.{png,jpeg,jpg,storyboard,xib,xcassets}"
 
 # 10
 s.swift_version = "4.2"

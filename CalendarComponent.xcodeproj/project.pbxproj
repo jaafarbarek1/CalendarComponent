@@ -10,6 +10,7 @@
 		6475E54822C8ECE7009F29BE /* CalendarComponent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6475E53E22C8ECE7009F29BE /* CalendarComponent.framework */; };
 		6475E54D22C8ECE7009F29BE /* CalendarComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6475E54C22C8ECE7009F29BE /* CalendarComponentTests.swift */; };
 		6475E54F22C8ECE7009F29BE /* CalendarComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 6475E54122C8ECE7009F29BE /* CalendarComponent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6475E55922C8FAB1009F29BE /* CalendarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6475E55822C8FAB1009F29BE /* CalendarEvent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		6475E54722C8ECE7009F29BE /* CalendarComponentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalendarComponentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6475E54C22C8ECE7009F29BE /* CalendarComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarComponentTests.swift; sourceTree = "<group>"; };
 		6475E54E22C8ECE7009F29BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6475E55822C8FAB1009F29BE /* CalendarEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarEvent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 		6475E54022C8ECE7009F29BE /* CalendarComponent */ = {
 			isa = PBXGroup;
 			children = (
+				6475E55822C8FAB1009F29BE /* CalendarEvent.swift */,
 				6475E54122C8ECE7009F29BE /* CalendarComponent.h */,
 				6475E54222C8ECE7009F29BE /* Info.plist */,
 			);
@@ -194,6 +197,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6475E55922C8FAB1009F29BE /* CalendarEvent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +395,7 @@
 		6475E55622C8ECE7009F29BE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FA8B9Z4NNS;
 				INFOPLIST_FILE = CalendarComponentTests/Info.plist;
@@ -409,6 +414,7 @@
 		6475E55722C8ECE7009F29BE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FA8B9Z4NNS;
 				INFOPLIST_FILE = CalendarComponentTests/Info.plist;
