@@ -14,29 +14,30 @@ extension CalendarView: UICollectionViewDelegateFlowLayout {
 
         guard let date = self.dateFromIndexPath(indexPath) else { return }
 
-        if let index = selectedIndexPaths.index(of: indexPath) {
-
-            delegate?.calendar(self, didDeselectDate: date)
-            if enableDeslection {
-                selectedIndexPaths.remove(at: index)
-                selectedDates.remove(at: index)
-            }
-
-        } else {
-
-            if !multipleSelectionEnable {
-                selectedIndexPaths.removeAll()
-                selectedDates.removeAll()
-            }
-
-            selectedIndexPaths.append(indexPath)
-            selectedDates.append(date)
-
-            let eventsForDaySelected = eventsByIndexPath[indexPath] ?? []
-            delegate?.calendar(self, didSelectDate: date, withEvents: eventsForDaySelected)
-        }
-
-        self.reloadData()
+        delegate?.calendar(self, didSelectDate: date, withEvents: [])
+//        if let index = selectedIndexPaths.index(of: indexPath) {
+//
+//            delegate?.calendar(self, didDeselectDate: date)
+//            if enableDeslection {
+//                selectedIndexPaths.remove(at: index)
+//                selectedDates.remove(at: index)
+//            }
+//
+//        } else {
+//
+//            if !multipleSelectionEnable {
+//                selectedIndexPaths.removeAll()
+//                selectedDates.removeAll()
+//            }
+//
+//            selectedIndexPaths.append(indexPath)
+//            selectedDates.append(date)
+//
+//            let eventsForDaySelected = eventsByIndexPath[indexPath] ?? []
+//            delegate?.calendar(self, didSelectDate: date, withEvents: eventsForDaySelected)
+//        }
+//
+//        self.reloadData()
     }
 
     public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {

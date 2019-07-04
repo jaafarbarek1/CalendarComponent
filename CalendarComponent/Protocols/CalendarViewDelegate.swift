@@ -16,7 +16,7 @@ public protocol CalendarViewDelegate: AnyObject {
     func calendar(_ calendar: CalendarView, didLongPressDate date: Date, withEvents events: [CalendarEvent]?)
 }
 
-extension CalendarViewDelegate {
+public extension CalendarViewDelegate {
     func calendar(_ calendar: CalendarView, canSelectDate date: Date) -> Bool { return true }
     func calendar(_ calendar: CalendarView, didDeselectDate date: Date) { return }
     func calendar(_ calendar: CalendarView, didLongPressDate date: Date, withEvents events: [CalendarEvent]?) { return }

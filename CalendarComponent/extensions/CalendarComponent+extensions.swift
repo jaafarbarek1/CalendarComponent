@@ -6,16 +6,7 @@
 //  Copyright © 2019 MATIC. All rights reserved.
 //
 
-import UIKit
-//import EventKit
-
-//extension EKEvent {
-//    var isOneDay : Bool {
-//        let components = Calendar.current.dateComponents([.era, .year, .month, .day],
-//                                                         from: self.startDate, to: self.endDate)
-//        return (components.era == 0 && components.year == 0 && components.month == 0 && components.day == 0)
-//    }
-//}
+import Foundation
 
 extension String {
     subscript(_ range: CountableRange<Int>) -> String {

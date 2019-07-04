@@ -34,9 +34,9 @@ open class CalendarDayCell: UICollectionViewCell {
         }
     }
 
-    override open var isSelected: Bool {
+     open var isCellSelected: Bool {
         didSet {
-            switch isSelected {
+            switch isCellSelected {
             case true:
                 self.bgView.layer.borderColor = CalendarView.Style.cellSelectedBorderColor.cgColor
                 self.bgView.layer.borderWidth = CalendarView.Style.cellSelectedBorderWidth
@@ -57,6 +57,7 @@ open class CalendarDayCell: UICollectionViewCell {
 
         self.textLabel.textAlignment = NSTextAlignment.center
         self.textLabel.font = CalendarView.Style.cellFont
+        isCellSelected = false
 
         super.init(frame: frame)
 
@@ -66,6 +67,7 @@ open class CalendarDayCell: UICollectionViewCell {
     }
 
     required public init?(coder aDecoder: NSCoder) {
+        isCellSelected = false
         super.init(coder: aDecoder)
     }
 

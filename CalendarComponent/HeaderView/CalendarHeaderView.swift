@@ -10,11 +10,39 @@ import UIKit
 
 open class CalendarHeaderView: UIView {
 
+    var maximumNumberOfDaysToSelect: Int = 0 {
+        didSet {
+            configureUI()
+        }
+
+    }
+    var preselectedDates = [Date]()
+//    {
+//        didSet {
+//            configureUI()
+//        }
+//    }
+    func configureUI(){
+        if maximumNumberOfDaysToSelect == 0 {
+            checkmarkView.isHidden = true
+            daysLeftLabel.isHidden = true
+        }else {
+            if maximumNumberOfDaysToSelect == preselectedDates.count  {
+                checkmarkView.isHidden = false
+                daysLeftLabel.isHidden = true
+            }else {
+                checkmarkView.isHidden = true
+                daysLeftLabel.isHidden = false
+                daysLeftLabel.text = "\(maximumNumberOfDaysToSelect - preselectedDates.count) days left to choose"
+            }
+        }
+    }
+
     lazy var monthLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = NSTextAlignment.center
+        label.textAlignment = .center
         label.font = UIFont(name: "Helvetica", size: 17.0)
-        label.textColor = UIColor.charcoalGrey
+        label.textColor = .charcoalGrey
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -24,7 +52,20 @@ open class CalendarHeaderView: UIView {
         label.text = "Date and time"
         label.textAlignment = NSTextAlignment.left
         label.font = UIFont(name: "Helvetica", size: 13.0)
-        label.textColor = UIColor.blueGrey
+        label.textColor = .blueGrey
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    lazy var daysLeftLabel: PaddingLabel = {
+        let label = PaddingLabel()
+        label.text = "1 day left to choose"
+        label.textAlignment = .center
+        label.font = UIFont(name: "Helvetica", size: 13.0)
+        label.textColor = .white
+        label.backgroundColor = .gray
+        label.layer.cornerRadius = 10
+        label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -46,8 +87,8 @@ open class CalendarHeaderView: UIView {
 
             weekdayLabel.text = formatter.shortWeekdaySymbols[(index % 7)].capitalized
 
-            weekdayLabel.textColor = UIColor.blueGrey
-            weekdayLabel.textAlignment = NSTextAlignment.center
+            weekdayLabel.textColor = .blueGrey
+            weekdayLabel.textAlignment = .center
 
             view.addSubview(weekdayLabel)
         }
@@ -55,6 +96,26 @@ open class CalendarHeaderView: UIView {
         self.addSubview(view)
 
         return view
+
+    }()
+
+    lazy var checkmarkImageView: UIImageView = {
+        let checkmarkImageView = UIImageView()
+        checkmarkImageView.image = CalendarView.Constants.checkmarkImage
+        checkmarkImageView.translatesAutoresizingMaskIntoConstraints = false
+        checkmarkImageView.contentMode = .scaleAspectFit
+        return checkmarkImageView
+
+    }()
+
+    lazy var checkmarkView: UIView = {
+        let checkmarkView = UIView()
+        checkmarkView.backgroundColor = CalendarView.Constants.checkmarkImageViewBackgroundColor
+        checkmarkView.translatesAutoresizingMaskIntoConstraints = false
+        checkmarkView.contentMode = .scaleAspectFit
+        checkmarkView.layer.cornerRadius = 10
+        checkmarkView.clipsToBounds = true
+        return checkmarkView
 
     }()
 
@@ -68,6 +129,8 @@ open class CalendarHeaderView: UIView {
 
     override open func layoutSubviews() {
         super.layoutSubviews()
+
+
 
         self.addSubview(bottomSeparatorView)
         bottomSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
@@ -83,6 +146,40 @@ open class CalendarHeaderView: UIView {
         titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
         titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
 
+        self.addSubview(daysLeftLabel)
+        daysLeftLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15).isActive = true
+        daysLeftLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 19).isActive = true
+        daysLeftLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        //        daysLeftLabel.isHidden = true
+
+        self.addSubview(checkmarkView)
+        checkmarkView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15).isActive = true
+        checkmarkView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
+        checkmarkView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        checkmarkView.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        //        checkmarkView.isHidden = true
+
+        checkmarkView.addSubview(checkmarkImageView)
+        checkmarkImageView.centerXAnchor.constraint(equalTo: checkmarkView.centerXAnchor).isActive = true
+        checkmarkImageView.centerYAnchor.constraint(equalTo: checkmarkView.centerYAnchor).isActive = true
+        checkmarkImageView.heightAnchor.constraint(equalToConstant: 9).isActive = true
+        checkmarkImageView.widthAnchor.constraint(equalToConstant: 11).isActive = true
+        //        checkmarkImageView.isHidden = false
+
+        //        if maximumNumberOfDaysToSelect == 0 {
+        //            checkmarkView.isHidden = true
+        //            daysLeftLabel.isHidden = true
+        //        }else {
+        //            if maximumNumberOfDaysToSelect == preselectedDates.count  {
+        //                checkmarkView.isHidden = false
+        //                daysLeftLabel.isHidden = true
+        //            }else {
+        //                checkmarkView.isHidden = true
+        //                daysLeftLabel.isHidden = false
+        //                daysLeftLabel.text = "\(maximumNumberOfDaysToSelect - preselectedDates.count) days left to choose"
+        //            }
+        //        }
+
         var frame = self.bounds
         frame.origin.y += 5.0
         frame.size.height = self.bounds.size.height / 2.0 - 5.0
@@ -96,9 +193,8 @@ open class CalendarHeaderView: UIView {
             height: self.bounds.size.height / 2.0
         )
 
-        for lbl in self.dayLabelContainerView.subviews {
-
-            lbl.frame = labelFrame
+        for label in self.dayLabelContainerView.subviews {
+            label.frame = labelFrame
             labelFrame.origin.x += labelFrame.size.width
         }
     }

@@ -11,22 +11,14 @@ import Foundation
 public protocol CalendarViewDataSource {
     func startDate() -> Date
     func endDate() -> Date
-    func preselectedDates() -> [Date]?
     /* optional */
+    func userSelectedDates() -> [Date]?
+    func maximumNumberOfDaysToSelect() -> Int
     func headerString(_ date: Date) -> String?
 }
 
-extension CalendarViewDataSource {
-
-    func startDate() -> Date {
-        return Date()
-    }
-
-    func endDate() -> Date {
-        return Date()
-    }
-
-    func preselectedDates() -> [Date]? {
+public extension CalendarViewDataSource {
+    func userSelectedDates() -> [Date]? {
         return nil
     }
 

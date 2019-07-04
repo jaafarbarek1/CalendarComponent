@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Fm-rG-Prc">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Example View Controller-->
+        <scene sceneID="dw0-pE-TSl">
+            <objects>
+                <viewController storyboardIdentifier="ExampleViewController" id="9Fm-rG-Prc" customClass="ExampleViewController" customModule="CalendarExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="J6X-IK-THj">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ySO-4u-kkt" customClass="CalendarView" customModule="CalendarComponent">
+                                <rect key="frame" x="15" y="120" width="345" height="270"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="270" id="C70-sX-hz9"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wfr-Ar-l3U">
+                                <rect key="frame" x="133.5" y="63" width="108" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I7E-vC-kVT">
+                                <rect key="frame" x="15" y="440" width="345" height="32"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <state key="normal" title="Change Availabilities"/>
+                                <connections>
+                                    <action selector="onWeeklyVisitsPressed:" destination="9Fm-rG-Prc" eventType="touchUpInside" id="7cM-OY-UNg"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jAH-Jp-aHI">
+                                <rect key="frame" x="15" y="486" width="345" height="32"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <state key="normal" title="package with 3/5 selected dates"/>
+                                <connections>
+                                    <action selector="onPackagesWithRandomNumberSelected:" destination="9Fm-rG-Prc" eventType="touchUpInside" id="R0N-6H-l2E"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cpb-LV-zTv">
+                                <rect key="frame" x="15" y="535" width="345" height="32"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <state key="normal" title="package after selecting all dates"/>
+                                <connections>
+                                    <action selector="onPackageWithAllDateSelected:" destination="9Fm-rG-Prc" eventType="touchUpInside" id="KmL-zZ-Ias"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SLI-bz-1YQ">
+                                <rect key="frame" x="15" y="617" width="345" height="30"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Reset">
+                                    <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="onResetPressed:" destination="9Fm-rG-Prc" eventType="touchUpInside" id="FyY-69-jh5"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.074509803920000006" green="0.86274509799999999" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Wfr-Ar-l3U" firstAttribute="centerX" secondItem="ySO-4u-kkt" secondAttribute="centerX" id="6S9-xF-RFy"/>
+                            <constraint firstItem="vXp-hI-1Lz" firstAttribute="trailing" secondItem="ySO-4u-kkt" secondAttribute="trailing" constant="15" id="H7U-wE-DU6"/>
+                            <constraint firstItem="SLI-bz-1YQ" firstAttribute="leading" secondItem="vXp-hI-1Lz" secondAttribute="leading" constant="15" id="J9r-15-Cbp"/>
+                            <constraint firstItem="jAH-Jp-aHI" firstAttribute="trailing" secondItem="I7E-vC-kVT" secondAttribute="trailing" id="QAM-e1-wXP"/>
+                            <constraint firstItem="vXp-hI-1Lz" firstAttribute="trailing" secondItem="SLI-bz-1YQ" secondAttribute="trailing" constant="15" id="Tn3-mb-sw1"/>
+                            <constraint firstItem="cpb-LV-zTv" firstAttribute="top" secondItem="jAH-Jp-aHI" secondAttribute="bottom" constant="17" id="eMc-2Y-07D"/>
+                            <constraint firstItem="cpb-LV-zTv" firstAttribute="leading" secondItem="jAH-Jp-aHI" secondAttribute="leading" id="feM-tI-sPP"/>
+                            <constraint firstItem="I7E-vC-kVT" firstAttribute="trailing" secondItem="ySO-4u-kkt" secondAttribute="trailing" id="gH9-u6-WjE"/>
+                            <constraint firstItem="jAH-Jp-aHI" firstAttribute="top" secondItem="I7E-vC-kVT" secondAttribute="bottom" constant="14" id="gtq-yS-Sha"/>
+                            <constraint firstItem="ySO-4u-kkt" firstAttribute="top" secondItem="vXp-hI-1Lz" secondAttribute="top" constant="100" id="idc-Rn-eL3"/>
+                            <constraint firstItem="ySO-4u-kkt" firstAttribute="leading" secondItem="vXp-hI-1Lz" secondAttribute="leading" constant="15" id="iqn-5m-McG"/>
+                            <constraint firstItem="vXp-hI-1Lz" firstAttribute="bottom" secondItem="SLI-bz-1YQ" secondAttribute="bottom" constant="20" id="kbB-Ec-xB7"/>
+                            <constraint firstItem="cpb-LV-zTv" firstAttribute="trailing" secondItem="jAH-Jp-aHI" secondAttribute="trailing" id="qe5-fX-dcK"/>
+                            <constraint firstItem="I7E-vC-kVT" firstAttribute="leading" secondItem="ySO-4u-kkt" secondAttribute="leading" id="tZs-iW-9vQ"/>
+                            <constraint firstItem="jAH-Jp-aHI" firstAttribute="leading" secondItem="I7E-vC-kVT" secondAttribute="leading" id="ti9-1n-nid"/>
+                            <constraint firstItem="I7E-vC-kVT" firstAttribute="top" secondItem="ySO-4u-kkt" secondAttribute="bottom" constant="50" id="uye-Hm-7s6"/>
+                            <constraint firstItem="ySO-4u-kkt" firstAttribute="top" secondItem="Wfr-Ar-l3U" secondAttribute="bottom" constant="36" id="w2Z-5H-uhL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="vXp-hI-1Lz"/>
+                    </view>
+                    <connections>
+                        <outlet property="calendarView" destination="ySO-4u-kkt" id="Lg5-OS-lih"/>
+                        <outlet property="selectedDateLabel" destination="Wfr-Ar-l3U" id="qGN-Zg-Lhu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G6K-2H-GmJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-87.200000000000003" y="68.815592203898049"/>
+        </scene>
+    </scenes>
+</document>

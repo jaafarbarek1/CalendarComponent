@@ -11,10 +11,10 @@ import UIKit
 public class CalendarView: UIView {
 
     public let cellReuseIdentifier = "CalendarDayCell"
-    public let itemsCount = 42 // rows:7 x cols:2
+    public let itemsCount = 14 // rows:7 x cols:2
 
     var headerView: CalendarHeaderView!
-    var collectionView: UICollectionView!
+    public var collectionView: UICollectionView!
 
     public lazy var calendar: Calendar = {
         var calendarStyle = Calendar(identifier: CalendarView.Style.identifier)
@@ -26,23 +26,21 @@ public class CalendarView: UIView {
     var endDateCache = Date()
     var startOfMonthCache = Date()
     var endOfMonthCache = Date()
+    var preselectedDates = [Date]() {
+        didSet {
+            selectedIndexPaths = []
+            selectedDates = []
+            selectDates(preselectedDates)
+        }
+    }
+    var maximumNumberOfDaysToSelect = 0 {
+        didSet {
+            headerView.maximumNumberOfDaysToSelect = maximumNumberOfDaysToSelect
+        }
+    }
+    var max = [Date]()
 
     var todayIndexPath: IndexPath?
-//    {
-//        didSet {
-//            if let idx = todayIndexPath {
-//                print("today is in: \(idx.row) row & section: \(idx.section) & item: \(idx.item)")
-//                let positionInColumn = idx.item % 7
-//                print("today's position in columns is: \(positionInColumn)")
-//
-//                //self.collectionView.scrollToItem(at: idx, at: UICollectionView.ScrollPosition.left, animated: true)
-//                if let date = dateFromIndexPath(idx) {
-//                    let weeks = Calendar.current.dateComponents([.weekOfMonth], from: date).weekOfMonth!
-//                    self.goToCurrentDateWeek(weeks)
-//                }
-//            }
-//        }
-//    }
 
     var selectedIndexPaths = [IndexPath]()
     var selectedDates = [Date]()
@@ -50,23 +48,24 @@ public class CalendarView: UIView {
     var monthInfoForSection = [Int: (firstDay: Int, daysTotal: Int)]()
     var eventsByIndexPath = [IndexPath: [CalendarEvent]]()
 
-    public var events: [CalendarEvent] = [] {
-        didSet {
-            self.eventsByIndexPath.removeAll()
-
-            for event in events {
-                guard let indexPath = self.indexPathForDate(event.startDate) else { continue }
-
-                var eventsForIndexPath = eventsByIndexPath[indexPath] ?? []
-                eventsForIndexPath.append(event)
-                eventsByIndexPath[indexPath] = eventsForIndexPath
-            }
-
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
-        }
-    }
+    public var events: [CalendarEvent] = []
+//    {
+//        didSet {
+//            self.eventsByIndexPath.removeAll()
+//
+//            for event in events {
+//                guard let indexPath = self.indexPathForDate(event.startDate) else { continue }
+//
+//                var eventsForIndexPath = eventsByIndexPath[indexPath] ?? []
+//                eventsForIndexPath.append(event)
+//                eventsByIndexPath[indexPath] = eventsForIndexPath
+//            }
+//
+//            DispatchQueue.main.async {
+//                self.collectionView.reloadData()
+//            }
+//        }
+//    }
 
     var flowLayout: CalendarFlowLayout {
         // swiftlint:disable force_cast
@@ -109,11 +108,11 @@ public class CalendarView: UIView {
 
         self.clipsToBounds = true
 
-        /* Header View */
-        self.headerView = CalendarHeaderView(frame: CGRect.zero)
+        // Header View
+        self.headerView = CalendarHeaderView(frame: .zero)
         self.addSubview(self.headerView)
 
-        /* Layout */
+        // Layout
         let layout = CalendarFlowLayout()
         layout.scrollDirection = self.direction
         layout.sectionInset = UIEdgeInsets.zero
@@ -121,18 +120,19 @@ public class CalendarView: UIView {
         layout.minimumLineSpacing = 0
         layout.itemSize = self.cellSize(in: self.bounds)
 
-        /* Collection View */
-        self.collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        self.collectionView.dataSource = self
-        self.collectionView.delegate = self
-        self.collectionView.isPagingEnabled = false
-        self.collectionView.backgroundColor = .clear
-        self.collectionView.showsHorizontalScrollIndicator = false
-        self.collectionView.showsVerticalScrollIndicator = false
-        self.collectionView.allowsMultipleSelection = false
-        self.collectionView.register(CalendarDayCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
-        self.collectionView.semanticContentAttribute = .forceLeftToRight // forces western style language orientation
-        self.addSubview(self.collectionView)
+        // Collection View
+        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.isPagingEnabled = false
+        collectionView.isScrollEnabled = false
+        collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.allowsMultipleSelection = false
+        collectionView.register(CalendarDayCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
+        collectionView.semanticContentAttribute = .forceLeftToRight // forces western style language orientation
+        addSubview(self.collectionView)
 
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(CalendarView.handleLongPress))
         self.collectionView.addGestureRecognizer(longPress)
@@ -182,14 +182,16 @@ public class CalendarView: UIView {
 
         flowLayout.itemSize = self.cellSize(in: self.bounds)
 
+        headerView.preselectedDates = preselectedDates
+        headerView.maximumNumberOfDaysToSelect = maximumNumberOfDaysToSelect
+        selectedDates = preselectedDates
         self.resetDisplayDate()
     }
 
     private func cellSize(in bounds: CGRect) -> CGSize {
-        let width = 50 // frame.size.width / 7.0
         return CGSize(
-            width: width, // number of days in week
-            height: width // maximum number of rows
+            width: frame.size.width / 7.0, // number of days in week
+            height: frame.size.width / 7.0
         )
     }
 
@@ -216,40 +218,6 @@ public class CalendarView: UIView {
 
         return point
     }
-//    func scrollViewOffsetToCurrentDate(for date: Date) -> CGPoint {
-//        var point = CGPoint.zero
-//
-//        guard let sections = self.indexPathForDate(date)?.section else { return point }
-//
-//        switch self.direction {
-//        case .horizontal:
-//            point.x = CGFloat(sections) * self.collectionView.frame.size.width
-//        case .vertical:
-//            let weeks: Double = Double(Calendar.current.dateComponents([.weekOfMonth], from: date).weekOfMonth!)
-//            print(self.collectionView.frame.size.height)
-//            var constant = 0.0
-//            switch weeks {
-//            case 1:
-//                constant = 0.0
-//            case 2:
-//                constant = 0.0
-//            case 3:
-//                constant = 2.9
-//            case 4:
-//                constant = 4.6
-//            case 5:
-//                constant = 2.6
-//            case 6:
-//                constant = 5.6
-//            default:
-//                constant = weeks
-//            }
-//            let offset: CGFloat = (CGFloat((constant) * (110 / 6))) / 100.0
-//            point.y = offset * self.collectionView.frame.size.height
-//
-//        }
-//        return point
-//    }
 }
 
 // MARK: Convertion
@@ -305,38 +273,16 @@ extension CalendarView {
     }
 }
 
-extension CalendarView {
-
-//    func goToCurrentDateWeek(_ offset: Int) {
-//
-//        guard let displayDate = self.displayDate else {
-//            return
-//        }
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//            self.collectionView.setContentOffset(self.scrollViewOffsetToCurrentDate(for: displayDate), animated: true)
-//        }
-//
-//    }
-}
-
 // MARK: - Public methods
 extension CalendarView {
 
-    /*
-     method: - reloadData
-     function: - reload all components in collection view
-     */
     public func reloadData() {
+        headerView.preselectedDates = preselectedDates
+        headerView.maximumNumberOfDaysToSelect = maximumNumberOfDaysToSelect
+        selectedDates = preselectedDates
         self.collectionView.reloadData()
     }
 
-    /*
-     method: - setDisplayDate
-     params:
-     - date: Date to extract month and year to scroll at correct section;
-     - animated: to handle animation if want;
-     function: - scroll calendar at date (month/year) passed as parameter.
-     */
     public func setDisplayDate(_ date: Date, animated: Bool = false) {
 
         guard (date >= startDateCache) && (date <= endDateCache) else { return }
@@ -344,26 +290,18 @@ extension CalendarView {
         self.displayDateOnHeader(date)
     }
 
-    /*
-     method: - selectDate
-     params:
-     - date: Date to select
-     function: - mark date as selected and add it to the array of selected dates
-     */
-    public func selectDate(_ date: Date) {
-        guard let indexPath = self.indexPathForDate(date) else { return }
-
-        self.collectionView.selectItem(at: indexPath, animated: false,
-                                       scrollPosition: UICollectionView.ScrollPosition())
-        self.collectionView(collectionView, didSelectItemAt: indexPath)
+    public func selectDates(_ dates: [Date]) {
+        for date in dates {
+            guard let indexPath = self.indexPathForDate(date) else { return }
+            selectedDates.append(date)
+            selectedIndexPaths.append(indexPath)
+        }
+        headerView.preselectedDates = dates
+//        self.collectionView.selectItem(at: indexPath, animated: false,
+//                                       scrollPosition: UICollectionView.ScrollPosition())
+//        self.collectionView(collectionView, didSelectItemAt: indexPath)
     }
 
-    /*
-     method: - deselectDate
-     params:
-     - date: Date to deselect
-     function: - unmark date as selected and remove it from the array of selected dates
-     */
     public func deselectDate(_ date: Date) {
         guard let indexPath = self.indexPathForDate(date) else { return }
         self.collectionView.deselectItem(at: indexPath, animated: false)

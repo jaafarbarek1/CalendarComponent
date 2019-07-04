@@ -16,6 +16,9 @@ extension CalendarView: UICollectionViewDataSource {
 
         self.startDateCache = dateSource.startDate()
         self.endDateCache = dateSource.endDate()
+        self.preselectedDates = dateSource.userSelectedDates() ?? []
+        print(dateSource.maximumNumberOfDaysToSelect())
+        self.maximumNumberOfDaysToSelect = dateSource.maximumNumberOfDaysToSelect()
 
         guard self.startDateCache <= self.endDateCache else { fatalError("Start date cannot be later than end date.") }
 
@@ -84,38 +87,40 @@ extension CalendarView: UICollectionViewDataSource {
                                                                     return UICollectionViewCell()
             }
 
-            guard let (firstDayIndex, numberOfDaysTotal) = self.monthInfoForSection[indexPath.section] else {
+            guard let (firstDayIndex, _) = self.monthInfoForSection[indexPath.section] else {
                 return dayCell
             }
-            print("total number of days in month: \(numberOfDaysTotal)")
 
             if let date = dateFromIndexPath(indexPath) {
-                var dateComponents = DateComponents()
 
-                dateComponents.day = 0
-                let today = date
-
-                let oneWeekFromNow = self.calendar.date(byAdding: dateComponents, to: today)!
-                if let day = oneWeekFromNow.dayNumberFromDate() {
+                if let day = date.dayNumberFromDate() {
                     dayCell.textLabel.text = "\(day)"
 
                 }
+                for preselectedDate in preselectedDates {
+                    print(preselectedDate)
+                }
             }
 
-            dayCell.isSelected = selectedIndexPaths.contains(indexPath)
+            print(selectedIndexPaths.count)
+            dayCell.isCellSelected = selectedIndexPaths.contains(indexPath)
 
             hideOrAlterCellsOutsideDates(indexPath: indexPath,
                                          firstDayIndex: firstDayIndex,
                                          lastDayIndex: itemsCount,
                                          dayCell: dayCell)
 
-            if let eventsForDay = self.eventsByIndexPath[indexPath] {
-                dayCell.eventsCount = eventsForDay.count
-            } else {
-                dayCell.eventsCount = 0
-            }
-
             return dayCell
+    }
+
+    func compareDate(date1: Date, date2: Date) -> Bool {
+        let order = Calendar.current.compare(date1, to: date2, toGranularity: .day)
+        switch order {
+        case .orderedSame:
+            return true
+        default:
+            return false
+        }
     }
 }
 
